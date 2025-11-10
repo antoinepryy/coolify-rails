@@ -1,0 +1,26 @@
+services:
+  api:
+    image: ${DOCKER_HUB_USERNAME}/coolify-qonvia-api:latest
+    ports:
+      - "3001:3000"
+    environment:
+      - RAILS_ENV=production
+      - FRONTEND_URL=${FRONTEND_URL}
+      - SECRET_KEY_BASE=${SECRET_KEY_BASE}
+    networks:
+      - app-network
+
+  frontend:
+    image: ${DOCKER_HUB_USERNAME}/coolify-qonvia-frontend:latest
+    ports:
+      - "3000:3000"
+    environment:
+      - REACT_APP_API_URL=${API_URL}
+    depends_on:
+      - api
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
