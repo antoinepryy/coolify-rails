@@ -7,7 +7,9 @@ RUN apt-get update -qq && \
     build-essential \
     curl \
     git \
-    sqlite3 && \
+    sqlite3 \
+    libyaml-dev \
+    pkg-config && \
     rm -rf /var/lib/apt/lists /var/cache/apt/archives
 
 # Set working directory
@@ -16,8 +18,9 @@ WORKDIR /rails
 # Copy gemfiles
 COPY Gemfile Gemfile.lock ./
 
-# Install gems
-RUN bundle install
+# Install bundler and gems
+RUN gem install bundler && \
+    bundle install --without development test
 
 # Copy application code
 COPY . .
