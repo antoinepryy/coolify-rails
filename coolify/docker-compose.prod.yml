@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  api:
+    build: 
+      context: ./api
+      dockerfile: Dockerfile
+    environment:
+      - RAILS_ENV=production
+      - SECRET_KEY_BASE=${SECRET_KEY_BASE}
+      - FRONTEND_URL=${FRONTEND_URL}
+      - RAILS_SERVE_STATIC_FILES=true
+    networks:
+      - app-network
+    labels:
+      - "coolify.name=rails-api"
+      - "coolify.domain=api.${DOMAIN}"
+      - "coolify.port=80"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:80/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  frontend:
+    build:
+      context: ./api/frontend
+      dockerfile: Dockerfile
+    environment:
+      - REACT_APP_API_URL=https://api.${DOMAIN}
+    depends_on:
+      - api
+    networks:
+      - app-network
+    labels:
+      - "coolify.name=react-frontend"
+      - "coolify.domain=${DOMAIN}"
+      - "coolify.port=80"
+    restart: unless-stopped
+
+networks:
+  app-network:
+    driver: bridge
