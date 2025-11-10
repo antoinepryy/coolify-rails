@@ -33,7 +33,7 @@ RUN mkdir -p storage tmp log && \
 ENV RAILS_ENV=production
 
 # Expose port
-EXPOSE 3000
+EXPOSE 80
 
 # Start server
-CMD ["bundle", "exec", "rails", "server", "-b", "0.0.0.0"]
+CMD ["bundle", "exec", "rails", "server", "-b", "0.0.0.0", "-p", "80"]
