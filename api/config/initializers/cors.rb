@@ -7,7 +7,12 @@
 
 Rails.application.config.middleware.insert_before 0, Rack::Cors do
   allow do
-    origins "localhost:3000", "127.0.0.1:3000", ENV["FRONTEND_URL"] || "http://localhost:3000"
+    origins "localhost:3000", 
+            "127.0.0.1:3000", 
+            ENV["FRONTEND_URL"], 
+            "http://c48g0o40wswo4ck4co8cgwo4.217.182.253.161.sslip.io",
+            "https://c48g0o40wswo4ck4co8cgwo4.217.182.253.161.sslip.io",
+            /.*\.sslip\.io$/
 
     resource "*",
       headers: :any,

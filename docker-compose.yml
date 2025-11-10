@@ -13,7 +13,6 @@ services:
       RAILS_LOG_TO_STDOUT: "true"
     labels:
       - "coolify.name=rails-api"
-      - "coolify.domain=api.${DOMAIN:-localhost}"
       - "coolify.port=80"
     restart: unless-stopped
     healthcheck:
@@ -27,11 +26,10 @@ services:
       context: ./api/frontend
       dockerfile: Dockerfile
       args:
-        REACT_APP_API_URL: https://api.${DOMAIN:-localhost}
+        REACT_APP_API_URL: ${API_URL:-http://wo040wk444gwsc4skw84w808.217.182.253.161.sslip.io}
     depends_on:
       - api
     labels:
       - "coolify.name=react-frontend"  
-      - "coolify.domain=${DOMAIN:-localhost}"
       - "coolify.port=80"
     restart: unless-stopped

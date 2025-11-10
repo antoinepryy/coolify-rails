@@ -6,13 +6,15 @@
 In your Coolify project settings, add these environment variables:
 
 ```bash
-# REQUIRED - Replace with your domain
-DOMAIN=yourdomain.com
-FRONTEND_URL=https://yourdomain.com
+# REQUIRED - Use your Coolify-generated domains
+API_URL=http://wo040wk444gwsc4skw84w808.217.182.253.161.sslip.io
+FRONTEND_URL=http://c48g0o40wswo4ck4co8cgwo4.217.182.253.161.sslip.io
 
 # REQUIRED - Generate with: openssl rand -hex 64
 SECRET_KEY_BASE=your_generated_secret_key_here
 ```
+
+**Note**: Replace the URLs above with your actual Coolify-generated domains.
 
 ### 2. **Deploy Configuration**
 - **Repository**: Use this Git repository
@@ -40,11 +42,26 @@ SECRET_KEY_BASE=your_generated_secret_key_here
 
 | Variable | Required | Description | Example |
 |----------|----------|-------------|---------|
-| `DOMAIN` | ✅ Yes | Your main domain | `myapp.com` |
-| `FRONTEND_URL` | ✅ Yes | Frontend URL for CORS | `https://myapp.com` |
+| `API_URL` | ✅ Yes | API service URL for React | `http://wo040wk444gwsc4skw84w808.217.182.253.161.sslip.io` |
+| `FRONTEND_URL` | ✅ Yes | Frontend URL for CORS | `http://c48g0o40wswo4ck4co8cgwo4.217.182.253.161.sslip.io` |
 | `SECRET_KEY_BASE` | ✅ Yes | Rails secret key | Generate with `openssl rand -hex 64` |
 | `RAILS_ENV` | ❌ No | Rails environment | `production` (default) |
 | `RAILS_LOG_LEVEL` | ❌ No | Log level | `info` (default) |
+
+## 🔄 Updating Domains for Your Deployment
+
+**Important**: The domains in this repository are examples. For your deployment:
+
+1. **Deploy the services first** to get Coolify-generated domains
+2. **Note the generated domains** for each service:
+   - API service will get a domain like: `http://xxx.217.182.253.161.sslip.io`
+   - Frontend service will get a domain like: `http://yyy.217.182.253.161.sslip.io`
+3. **Update environment variables**:
+   ```bash
+   API_URL=<your-api-domain>
+   FRONTEND_URL=<your-frontend-domain>
+   ```
+4. **Redeploy the frontend** to rebuild with correct API URL
 
 ## 🏗️ Services Configuration
 
