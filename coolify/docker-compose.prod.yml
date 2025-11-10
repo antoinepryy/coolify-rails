@@ -6,19 +6,20 @@ services:
       context: ./api
       dockerfile: Dockerfile
     environment:
-      - RAILS_ENV=production
-      - SECRET_KEY_BASE=${SECRET_KEY_BASE}
-      - FRONTEND_URL=${FRONTEND_URL}
-      - RAILS_SERVE_STATIC_FILES=true
+      RAILS_ENV: production
+      SECRET_KEY_BASE: ${SECRET_KEY_BASE:-changeme}
+      FRONTEND_URL: ${FRONTEND_URL:-http://localhost}
+      RAILS_SERVE_STATIC_FILES: "true"
+      RAILS_LOG_TO_STDOUT: "true"
     networks:
       - app-network
     labels:
       - "coolify.name=rails-api"
-      - "coolify.domain=api.${DOMAIN}"
+      - "coolify.domain=api.${DOMAIN:-localhost}"
       - "coolify.port=80"
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:80/api/health"]
+      test: ["CMD", "curl", "-f", "http://localhost:80/up"]
       interval: 30s
       timeout: 10s
       retries: 3
@@ -27,15 +28,15 @@ services:
     build:
       context: ./api/frontend
       dockerfile: Dockerfile
-    environment:
-      - REACT_APP_API_URL=https://api.${DOMAIN}
+      args:
+        REACT_APP_API_URL: https://api.${DOMAIN:-localhost}
     depends_on:
       - api
     networks:
       - app-network
     labels:
-      - "coolify.name=react-frontend"
-      - "coolify.domain=${DOMAIN}"
+      - "coolify.name=react-frontend"  
+      - "coolify.domain=${DOMAIN:-localhost}"
       - "coolify.port=80"
     restart: unless-stopped
 
